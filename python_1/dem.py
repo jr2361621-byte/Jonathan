@@ -4,8 +4,8 @@ def start_game():
     print("====================================")
     print("     ESCAPE THE CURSED DUNGEON")
     print("====================================")
-    print("You wake up in a dark, cold dungeon cell.")
-    print("You don’t remember how you got here...")
+    print("You wake up in a" \
+    "r how you got here...")
     print("The only thing you know is: you must escape.\n")
 
     inventory = []        # list to store items like keys or weapons
