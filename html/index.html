@@ -1,0 +1,331 @@
+<!--
+  Clothing Website - single-file HTML
+  - Uses Tailwind CSS CDN for styling
+  - Responsive layout, product grid, product modal, simple cart sidebar (no backend)
+  - Replace product images/text/prices with your own
+  - Save this file as `index.html` and open in your browser
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Modern Threads — Clothing Store</title>
+  <meta name="description" content="A modern, responsive clothing store template." />
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Small custom styles for transitions and scrollbar */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .fade-enter { opacity: 0; transform: translateY(6px); }
+    .fade-enter-active { opacity: 1; transform: translateY(0); transition: all 220ms ease; }
+  </style>
+</head>
+<body class="antialiased text-gray-800 bg-gray-50">
+  <!-- Header / Nav -->
+  <header class="bg-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="#" class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-pink-500 rounded-md flex items-center justify-center text-white font-bold">MT</div>
+          <span class="font-semibold text-lg">Modern Threads</span>
+        </a>
+
+        <nav class="hidden md:flex gap-6 items-center text-sm">
+          <a href="#" class="hover:text-indigo-600">Women</a>
+          <a href="#" class="hover:text-indigo-600">Men</a>
+          <a href="#" class="hover:text-indigo-600">Accessories</a>
+          <a href="#collections" class="hover:text-indigo-600">Collections</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <button id="searchBtn" class="hidden md:inline-flex px-3 py-1 rounded-md text-sm hover:bg-gray-100">Search</button>
+          <button id="cartToggle" aria-label="Open cart" class="relative inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-gray-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 7h12l-2-7M16 21a1 1 0 11-2 0 1 1 0 012 0zm-8 0a1 1 0 11-2 0 1 1 0 012 0z" /></svg>
+            <span id="cartCount" class="text-xs">0</span>
+          </button>
+          <button id="menuBtn" class="md:hidden inline-flex p-2 rounded-md hover:bg-gray-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <p class="text-sm uppercase tracking-wider text-indigo-600 font-medium">New Arrival</p>
+        <h1 class="mt-4 text-4xl font-extrabold leading-tight">Quality pieces. Everyday style.</h1>
+        <p class="mt-4 text-gray-600 max-w-xl">Shop our curated collection of wardrobe essentials with sustainable fabrics and modern fits. Free shipping on orders over $80.</p>
+        <div class="mt-6 flex gap-3">
+          <a href="#products" class="inline-flex items-center px-5 py-3 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700">Shop Collections</a>
+          <a href="#" class="inline-flex items-center px-5 py-3 border rounded-md">Our Story</a>
+        </div>
+      </div>
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1520975919132-4b5b9f3d9f8f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=3b6c0b6ad9bf1e8b5c977d7b92bff1b0" alt="Clothing hero" class="w-full rounded-xl shadow-lg object-cover h-80 sm:h-96" />
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <section id="products" class="mt-12">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h2 class="text-2xl font-semibold">Featured Products</h2>
+        <div class="flex gap-2">
+          <button class="filterBtn px-3 py-1 rounded-md border text-sm" data-filter="all">All</button>
+          <button class="filterBtn px-3 py-1 rounded-md border text-sm" data-filter="women">Women</button>
+          <button class="filterBtn px-3 py-1 rounded-md border text-sm" data-filter="men">Men</button>
+          <button class="filterBtn px-3 py-1 rounded-md border text-sm" data-filter="accessories">Accessories</button>
+        </div>
+      </div>
+
+      <!-- Product grid -->
+      <div id="productGrid" class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Product Card Template (duplicated with different data) -->
+        <article class="productCard bg-white rounded-lg shadow-sm overflow-hidden" data-category="women" data-id="1">
+          <button class="w-full text-left openProduct"> 
+            <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=4f8f0e2c3a1b1a7d7a9a2c4c3fbbffea" alt="White Tee" class="w-full h-56 object-cover" />
+            <div class="p-4">
+              <h3 class="font-medium">Essential White Tee</h3>
+              <p class="text-sm text-gray-500 mt-1">Cotton, relaxed fit</p>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="font-semibold">$28</span>
+                <span class="text-xs text-gray-400">+ Free returns</span>
+              </div>
+            </div>
+          </button>
+        </article>
+
+        <article class="productCard bg-white rounded-lg shadow-sm overflow-hidden" data-category="men" data-id="2">
+          <button class="w-full text-left openProduct"> 
+            <img src="https://images.unsplash.com/photo-1520975919132-4b5b9f3d9f8f?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=3b6c0b6ad9bf1e8b5c977d7b92bff1b0" alt="Denim Jacket" class="w-full h-56 object-cover" />
+            <div class="p-4">
+              <h3 class="font-medium">Classic Denim Jacket</h3>
+              <p class="text-sm text-gray-500 mt-1">Timeless trucker cut</p>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="font-semibold">$89</span>
+                <span class="text-xs text-gray-400">Limited stock</span>
+              </div>
+            </div>
+          </button>
+        </article>
+
+        <article class="productCard bg-white rounded-lg shadow-sm overflow-hidden" data-category="accessories" data-id="3">
+          <button class="w-full text-left openProduct"> 
+            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=8a6b3b6b6c7a2f7c1d6d8efb9a6a3f1b" alt="Leather Belt" class="w-full h-56 object-cover" />
+            <div class="p-4">
+              <h3 class="font-medium">Leather Belt</h3>
+              <p class="text-sm text-gray-500 mt-1">Vegetable-tanned leather</p>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="font-semibold">$45</span>
+                <span class="text-xs text-gray-400">Quality guaranteed</span>
+              </div>
+            </div>
+          </button>
+        </article>
+
+        <article class="productCard bg-white rounded-lg shadow-sm overflow-hidden" data-category="women" data-id="4">
+          <button class="w-full text-left openProduct"> 
+            <img src="https://images.unsplash.com/photo-1520975928394-65b9a3b45d74?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=9c1b4d3f8f1a2b3c4d5e6f7a8b9c0d1e" alt="Summer Dress" class="w-full h-56 object-cover" />
+            <div class="p-4">
+              <h3 class="font-medium">Flowing Summer Dress</h3>
+              <p class="text-sm text-gray-500 mt-1">Lightweight linen blend</p>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="font-semibold">$64</span>
+                <span class="text-xs text-gray-400">Best seller</span>
+              </div>
+            </div>
+          </button>
+        </article>
+
+        <!-- Add more product cards as needed -->
+      </div>
+    </section>
+
+    <!-- Newsletter / CTA -->
+    <section class="mt-12 bg-gradient-to-r from-indigo-600 to-pink-500 rounded-lg text-white p-8">
+      <div class="max-w-3xl">
+        <h3 class="text-2xl font-bold">Join the Modern Threads Club</h3>
+        <p class="mt-2 opacity-90">Get early access to new drops, members-only discounts, and style tips.</p>
+        <form class="mt-4 flex gap-2 max-w-md">
+          <input type="email" placeholder="Your email" required class="flex-1 px-4 py-2 rounded-md border-transparent focus:outline-none" />
+          <button class="px-4 py-2 bg-white text-indigo-600 rounded-md font-medium">Join</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-12 text-sm text-gray-600">
+      <div class="border-t pt-6 pb-12">
+        <div class="flex flex-col md:flex-row md:justify-between gap-6">
+          <div>
+            <h4 class="font-semibold">Modern Threads</h4>
+            <p class="mt-2">Sustainable clothing made with care. Wear better.</p>
+          </div>
+          <div class="flex gap-8">
+            <div>
+              <h5 class="font-semibold">Shop</h5>
+              <ul class="mt-2 space-y-1">
+                <li>Women</li>
+                <li>Men</li>
+                <li>Accessories</li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="font-semibold">Support</h5>
+              <ul class="mt-2 space-y-1">
+                <li>Contact</li>
+                <li>Shipping</li>
+                <li>Returns</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="mt-6 text-xs">© <span id="year"></span> Modern Threads — All rights reserved.</p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Product Modal -->
+  <div id="productModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-lg max-w-3xl w-full overflow-hidden shadow-lg">
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <img id="modalImage" src="" alt="" class="object-cover w-full h-80 md:h-full" />
+        <div class="p-6">
+          <h3 id="modalTitle" class="text-2xl font-bold"></h3>
+          <p id="modalDesc" class="mt-2 text-gray-600"></p>
+          <p id="modalPrice" class="mt-4 font-semibold text-lg"></p>
+          <div class="mt-6 flex items-center gap-3">
+            <label class="text-sm">Size</label>
+            <select id="sizeSelect" class="px-3 py-2 border rounded-md">
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+              <option>XL</option>
+            </select>
+            <button id="addToCartModal" class="ml-auto px-4 py-2 bg-indigo-600 text-white rounded-md">Add to cart</button>
+          </div>
+          <button id="closeModal" class="mt-6 text-sm text-gray-500">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <aside id="cartSidebar" class="fixed right-0 top-0 h-full w-80 bg-white shadow-lg transform translate-x-full transition-transform z-50">
+    <div class="p-4 flex items-center justify-between border-b">
+      <h4 class="font-semibold">Your Cart</h4>
+      <button id="closeCart" class="text-sm text-gray-500">Close</button>
+    </div>
+    <div id="cartItems" class="p-4 space-y-4 overflow-y-auto h-[calc(100%-140px)] no-scrollbar"></div>
+    <div class="p-4 border-t">
+      <div class="flex items-center justify-between">
+        <span class="font-medium">Subtotal</span>
+        <span id="cartSubtotal" class="font-semibold">$0.00</span>
+      </div>
+      <button class="mt-4 w-full px-4 py-2 bg-indigo-600 text-white rounded-md">Checkout</button>
+    </div>
+  </aside>
+
+  <!-- Scripts -->
+  <script>
+    // Basic interactivity: filtering, modal, and a simple cart
+    const products = Array.from(document.querySelectorAll('.productCard'));
+    const filterBtns = document.querySelectorAll('.filterBtn');
+    const productGrid = document.getElementById('productGrid');
+    const modal = document.getElementById('productModal');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartItemsEl = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const cartSubtotal = document.getElementById('cartSubtotal');
+
+    let cart = [];
+
+    function updateCartUI(){
+      cartItemsEl.innerHTML = '';
+      let subtotal = 0;
+      cart.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'flex items-center gap-3';
+        el.innerHTML = `
+          <img src="${item.image}" class="w-16 h-16 object-cover rounded" />
+          <div class="flex-1">
+            <div class="font-medium">${item.title}</div>
+            <div class="text-xs text-gray-500">Size: ${item.size}</div>
+            <div class="text-sm font-semibold">$${item.price.toFixed(2)}</div>
+          </div>
+          <button class="removeBtn text-sm text-gray-500">Remove</button>
+        `;
+        el.querySelector('.removeBtn').addEventListener('click', ()=>{
+          cart = cart.filter(c=>c.id !== item.id || c.size !== item.size);
+          updateCartUI();
+        });
+        cartItemsEl.appendChild(el);
+        subtotal += item.price;
+      });
+      cartCount.textContent = cart.length;
+      cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+    }
+
+    // Filter
+    filterBtns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const f = btn.dataset.filter;
+        products.forEach(p=>{
+          if(f === 'all' || p.dataset.category === f) p.classList.remove('hidden'); else p.classList.add('hidden');
+        });
+      });
+    });
+
+    // Open product modal
+    document.querySelectorAll('.openProduct').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        const card = e.currentTarget.closest('.productCard');
+        const img = card.querySelector('img').src;
+        const title = card.querySelector('h3').textContent;
+        const desc = card.querySelector('p') ? card.querySelector('p').textContent : '';
+        const priceText = card.querySelector('.font-semibold').textContent.replace('$','');
+        const price = parseFloat(priceText) || 0;
+        document.getElementById('modalImage').src = img;
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDesc').textContent = desc;
+        document.getElementById('modalPrice').textContent = `$${price.toFixed(2)}`;
+        document.getElementById('addToCartModal').dataset.product = JSON.stringify({id: card.dataset.id, title, price, image: img});
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      });
+    });
+
+    document.getElementById('closeModal').addEventListener('click', ()=>{ modal.classList.add('hidden'); modal.classList.remove('flex'); });
+
+    // Add to cart from modal
+    document.getElementById('addToCartModal').addEventListener('click', (e)=>{
+      const prod = JSON.parse(e.currentTarget.dataset.product);
+      const size = document.getElementById('sizeSelect').value;
+      cart.push({...prod, size});
+      updateCartUI();
+      modal.classList.add('hidden'); modal.classList.remove('flex');
+      cartSidebar.classList.remove('translate-x-full');
+    });
+
+    // Cart toggle
+    document.getElementById('cartToggle').addEventListener('click', ()=>{
+      cartSidebar.classList.toggle('translate-x-full');
+    });
+    document.getElementById('closeCart').addEventListener('click', ()=>{
+      cartSidebar.classList.add('translate-x-full');
+    });
+
+    // Set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle (simple)
+    document.getElementById('menuBtn').addEventListener('click', ()=>{
+      alert('Mobile menu placeholder — replace with your link list.');
+    });
+  </script>
+</body>
+</html>
