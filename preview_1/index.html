@@ -2,99 +2,121 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CIELO</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <title>CIELO (Official).com</title>
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <div class="hero">
-    <div class="overlay">
+
+<!-- CART ICON -->
+<div id="cart-icon" onclick="toggleCart()">
+  🛒 (<span id="cart-count">0</span>)
+</div>
+
+<!-- CART PANEL -->
+<div id="cart">
+  <h2>Your Cart</h2>
+  <div id="cart-items"></div>
+  <h3>Total: $<span id="cart-total">0</span></h3>
+  <button onclick="clearCart()">Clear Cart</button>
+</div>
+
+  <!-- HOME -->
+  <section id="home" class="hero">
+    <div class="content">
       <h1>CIELO</h1>
-      <p>wear better, feel better</p>
-      <button onclick="goToCategories()">Shop Now</button>
+      <p>Feel better. Wear better</p>
+      <a href="#shop" class="btn">Shop Now</a>
     </div>
-  </div>
+  </section>
 
-  <script src="js/slideshow.js"></script>
-  <script src="js/app.js"></script>
+  <!-- SHOP -->
+  <section id="shop" class="shop">
+    <h2>Shop By Category</h2>
+
+    <div class="category-buttons">
+      <a href="#hoodies" class="category">Hoodies</a>
+      <a href="#shirts" class="category">Shirts</a>
+      <a href="#shorts" class="category">Shorts</a>
+      <a href="#pants" class="category">Pants</a>
+      <a href="#shoes" class="category">Shoes</a>
+      <a href="#accessories" class="category">Accessories</a>
+    </div>
+  </section>
+
+  <!-- HOODIE EXAMPLE -->
+  <section id="hoodies" class="shop">
+    <a href="#shop" class="back">← Back</a>
+
+    <h2>Hoodies</h2>
+
+    <div class="products">
+
+      <div class="product-card">
+        <img src="black_hoodie.png">
+        <h3>Hollister Hoodie</h3>
+        <p>$40</p>
+        <button class="checkout-btn" onclick="addToCart('Hollister Hoodie', 40)">
+          Add to Cart
+        </button>
+      </div>
+
+      <div class="product-card">
+        <img src="Untitled design-3.png">
+        <h3>Real Madrid Hoodie</h3>
+        <p>$45</p>
+        <button class="checkout-btn" onclick="addToCart('Real Madrid Hoodie', 45)">
+          Add to Cart
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+<script>
+let cart = [];
+
+function addToCart(name, price) {
+  cart.push({ name, price });
+  updateCart();
+}
+
+function updateCart() {
+  const cartItems = document.getElementById("cart-items");
+  const cartCount = document.getElementById("cart-count");
+  const cartTotal = document.getElementById("cart-total");
+
+  cartItems.innerHTML = "";
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price;
+
+    const div = document.createElement("div");
+    div.innerHTML = `
+      ${item.name} - $${item.price}
+      <button onclick="removeItem(${index})">X</button>
+    `;
+    cartItems.appendChild(div);
+  });
+
+  cartCount.textContent = cart.length;
+  cartTotal.textContent = total;
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  updateCart();
+}
+
+function clearCart() {
+  cart = [];
+  updateCart();
+}
+
+function toggleCart() {
+  document.getElementById("cart").classList.toggle("active");
+}
+</script>
+
 </body>
 </html>
-
-
-<!-- ================= CATEGORIES.HTML ================= -->
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-  <h1 class="center">Categories</h1>
-
-  <div class="categories">
-    <div onclick="go('tops.html')">Tops</div>
-    <div onclick="go('bottoms.html')">Bottoms</div>
-    <div onclick="go('accessory.html')">Accessory</div>
-  </div>
-
-  <script src="js/app.js"></script>
-</body>
-</html>
-
-
-<!-- ================= TOPS.HTML (same for others) ================= -->
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-  <h1 class="center">Tops</h1>
-
-  <div id="grid"></div>
-
-  <script src="js/cart.js"></script>
-  <script src="js/app.js"></script>
-</body>
-</html>
-
-
-<!-- ================= CART.HTML ================= -->
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-  <h1 class="center">Cart</h1>
-
-  <div id="cart"></div>
-  <button onclick="goToCheckout()">Proceed to Checkout</button>
-
-  <script src="js/cart.js"></script>
-  <script src="js/app.js"></script>
-</body>
-</html>
-
-
-<!-- ================= CHECKOUT.HTML ================= -->
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-  <h1 class="center">Checkout</h1>
-
-  <form onsubmit="placeOrder(event)">
-    <input placeholder="Full Name" required>
-    <input placeholder="Email" required>
-    <input placeholder="Address" required>
-    <input placeholder="City" required>
-    <input placeholder="ZIP Code" required>
-    <button type="submit">Place Order</button>
-  </form>
-
-  <script src="js/cart.js"></script>
-  <script src="js/app.js"></script>
-</body>
-</html>
-
